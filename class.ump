@@ -1,0 +1,43 @@
+class Paramedic {
+	String name;
+}
+
+class Pair {
+	0..1 -- 2 Paramedic;
+}
+
+class Ambulance {
+	int odometer;
+	String gpsCoordinates;
+
+	void addLogEntry {}
+
+	state {
+		Waiting {
+			newIncident -> DrivingToStart;
+			needMaintenance -> OutOfService;
+		}
+		OutOfService {
+			repaired -> Waiting;
+		}
+		Active {
+			DrivingToStart {}
+			TransportingPatient {}
+			arriveAtDestination -> Waiting;
+		}
+	}
+}
+
+class LogEntry {
+	list<String>
+
+}
+
+class WaitingLocation {
+	String gpsCoordinates;
+	0..1 -- * Ambulance
+}
+
+class Facade {
+	addIncident() {}
+}
