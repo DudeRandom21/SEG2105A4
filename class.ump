@@ -4,20 +4,21 @@ class Paramedic {
 
 class Pair {
 	0..1 -- 2 Paramedic;
+	0..1 -- 0..1 Ambulance;
 }
 
 class Ambulance {
 	int odometer;
 	String gpsCoordinates;
 
-	void addLogEntry {}
-
 	state {
 		Waiting {
-			newIncident -> DrivingToStart;
+			newIncident[!isTransport] -> DrivingToStart;
+			newIncident[isTransport] -> TransportingPatient;
 			needMaintenance -> OutOfService;
 		}
 		OutOfService {
+			entry/{Facade.getInstance().notifyOutOfService(this);}
 			repaired -> Waiting;
 		}
 		Active {
@@ -26,18 +27,40 @@ class Ambulance {
 			arriveAtDestination -> Waiting;
 		}
 	}
+
+	1 -- 1 Log;
+}
+
+class Log {
+	void addEntry(String patienID) {}
+	int totalKM(Date aDate) {}
+
+	1 -- * LogEntry;
 }
 
 class LogEntry {
-	list<String>
-
+	Date dateTime;
+	String gpsCoordinates;
+	int odometer;
+	String patienID;
 }
 
 class WaitingLocation {
 	String gpsCoordinates;
-	0..1 -- * Ambulance
+	0..1 -- * Ambulance;
 }
 
 class Facade {
-	addIncident() {}
+	singleton;
+
+	addIncident(String patienID, boolean isTransport) {}
+	changeShift(Ambulance aAmbulance, Pair aPair) {}
+	notifyOutOfService(Ambulance aAmbulance) {}
+	getTotalKM(Ambulance aAmbulance, Date aDate) {}
+
+	0..1 -> * Paramedic;
+	0..1 -> * Pair;
+	0..1 -> * Ambulance;
+	0..1 -> * Log;
+	0..1 -> * WaitingLocation;
 }
