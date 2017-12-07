@@ -1,0 +1,9 @@
+title Emergency Response System
+
+User->Facade: getAmbulanceArray()
+Facade->User: Displays list of Ambulances
+
+User->Ambulance: getAmbulance()
+
+User->Ambulance: getTotalKM()
+Ambulance->User: Returns number of kms

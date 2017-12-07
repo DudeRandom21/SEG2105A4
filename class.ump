@@ -57,6 +57,7 @@ class Facade {
 	changeShift(Ambulance aAmbulance, Pair aPair) {}
 	notifyOutOfService(Ambulance aAmbulance) {}
 	getTotalKM(Ambulance aAmbulance, Date aDate) {}
+	returnAmbulance() {}
 
 	0..1 -> * Paramedic;
 	0..1 -> * Pair;
