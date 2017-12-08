@@ -1,9 +1,25 @@
 title Emergency Response System
 
-User->Facade: getAmbulanceArray()
-Facade->User: Displays list of Ambulances
+User->":GUI": Show List of Ambulances
+":GUI"->":Facade": getAmbulances()
+":Facade"-->":GUI": List<Ambulance>
 
-User->Ambulance: getAmbulance()
+User->":GUI": Select Ambulance
+":GUI"->":GUI": displayAmbulance
 
-User->Ambulance: getTotalKM()
-Ambulance->User: Returns number of kms
+User->":GUI": Selects Date
+User->":GUI": Requests Total KMs
+
+":GUI"->":Ambulance": getTotalKM()
+
+":Ambulance"->":Log": getTotalKM(Date)
+
+loop :LogEntry.date == date
+    ":Log"->":LogEntry": getKM()
+    ":LogEntry"-->":Log":
+end
+
+":Log"-->":Ambulance":
+":Ambulance"-->":GUI":
+
+":GUI"->":GUI": displayTotalKM

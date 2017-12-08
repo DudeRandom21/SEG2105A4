@@ -11,6 +11,13 @@ class Ambulance {
 	int odometer;
 	String gpsCoordinates;
 
+	int getTotalKM(Date aDate) {}
+
+	void newIncident(String patienID, boolean isTransport) {}
+	void needMaintenance() {}
+	void repaired() {}
+	void arriveAtDestination() {}
+
 	state {
 		Waiting {
 			newIncident[!isTransport] -> DrivingToStart;
@@ -39,7 +46,7 @@ class Log {
 }
 
 class LogEntry {
-	Date dateTime;
+	Date date;
 	String gpsCoordinates;
 	int odometer;
 	String patienID;
@@ -53,11 +60,9 @@ class WaitingLocation {
 class Facade {
 	singleton;
 
-	addIncident(String patienID, boolean isTransport) {}
-	changeShift(Ambulance aAmbulance, Pair aPair) {}
-	notifyOutOfService(Ambulance aAmbulance) {}
-	getTotalKM(Ambulance aAmbulance, Date aDate) {}
-	returnAmbulance() {}
+	void addIncident(String patienID, boolean isTransport) {}
+	void changeShift(Ambulance aAmbulance, Pair aPair) {}
+	void notifyOutOfService(Ambulance aAmbulance) {}
 
 	0..1 -> * Paramedic;
 	0..1 -> * Pair;
